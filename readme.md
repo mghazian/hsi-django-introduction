@@ -78,3 +78,39 @@ urlpatterns = [
 Untuk menguji bahwa _URLconf_ yang dibuat telah berfungsi dengan benar, akses route yang telah dibuat.
 
 ![hello_world](writeup/image/hello_world.PNG)
+
+# Using Template
+
+Di Django, _template_ adalah sebutan untuk _view_ pada hierarki MVC dan sejenisnya. File-file _template_ diletakkan pada direktori bernama `templates`.
+
+File _template_ dapat digunakan untuk memberikan response atas sebuah request dengan menggunakan fungsi `django.shortcuts.render`. Fungsi ini menerima setidaknya dua parameter:
+1. `request`, object HttpRequest
+2. `template_name`, string atau `Sequence` _of string_, berisi nama file yang ada di dalam direktori `templates`
+
+Fungsi `render` mengembalikan `django.http.response.HttpResponse`, sehingga keluaran fungsi ini bisa langsung di-return.
+
+![hello_world_html](writeup/image/hello_world_html.PNG)
+
+Parameter ketiga dari fungsi `django.shortcuts.render` yaitu `context`, sebuah nilai yang memetakan sebuah string ke nilai apapun. `context` bisa menggunakan `dictionary` sebagai media pemetaan. Nilai `context` akan bisa diakses oleh _template_ dengan menggunakan double curly braces i.e. `{{ ... }}`, dimana isi kurung ini adalah key `dictionary` yang dikirimkan melalui fungsi `django.shortcuts.render`
+
+_View_ berikut ini,
+
+![hello_bono_source](writeup/image/hello_bono_source.PNG)
+
+dengan _template_ ini,
+
+![hello_bono_template](writeup/image/hello_bono_template.PNG)
+
+akan menghasilkan,
+
+![hello_bono](writeup/image/hello_bono.PNG)
+
+_Template_ juga bisa menerima conditional menggunakan sintaks `{% ... %}`. Contohnya,
+
+```python
+{% if name %}
+<h1>Hello {{ name }}</h1>
+{% else %}
+<h1>Hello World</h1>
+{% endif %}
+```
