@@ -40,3 +40,41 @@ Direktori ini berisikan hal berikut:
 View dibuat dengan mendefinisikan sebuah fungsi pada file _views.py_. Fungsi ini akan me-return response yang akan dikirim ke client. Salah satu nilai yang bisa digunakan sebagai nilai return fungsi view adalah class `django.http.HttpResponse`
 
 ![](writeup/image/playground_views.PNG)
+
+# Mapping URLS to Views
+
+Sebelumnya telah dijelaskan bahwa _views_ di Django merupakan response handler. _View_ yang sudah dibuat tidak langsung bisa digunakan oleh Django. Agar sebuah _view_ bisa digunakan oleh Django, _view_ tersebut harus "dipasangkan" terlebih dahulu.
+
+Ada beberapa cara yang bisa digunakan untuk memasang _view_. Salah satunya dengan membuat _URLconf_. _URLconf_ adalah file yang berisi konfigurasi endpoint yang bisa diterima beserta bagaimana response yang akan diberikan ketika endpoint tersebut diakses. File ini tidak memiliki aturan khusus terkait dengan namanya, namun konvensi umum yang digunakan adalah menamakan file ini dengan `urls.py`. Isi _URLconf_ adalah sebuah list bernama `urlpatterns` (_case-sensitive_). Isi list ini adalah instance class `django.urls.URLPattern`. Instance class tersebut dibuat dengan memanggil fungsi `django.urls.path`. Fungsi `django.urls.path` menerima beberapa parameter, namun dua yang diperlukan adalah berikut ini.
+
+1. `route`, string. Route endpoint yang dimaksud. Ex: `"page/about/contact"`
+2. `view`, function. `view` harus mengembalikan object yang merupakan turunan dari class `django.http.response.HttpResponseBase`, seperti `django.http.response.HttpResponse` atau `django.http.response.StreamingHttpResponse`. Artinya class turunan dari kedua class ini juga bisa digunakan sebagai return value function yang digunakan untuk `view`
+
+![playground_urlconf](writeup/image/playground_urlconf.PNG)
+
+Setelah file _URLconf_ dibuat, file ini dihubungkan melalui _URLconf_ utama: file `urls.py` di dalam direktori dengan nama project yang dibuat. Cara menghubungkan file _URLconf_ app ke _URLconf_ utama hampir sama dengan mendefinisikan route endpoint yang telah dijelaskan sebelumnya. Yang membedakan adalah pada parameter `view` di dalam fungsi `django.urls.path`, fungsi `django.http.include` digunakan. Fungsi `django.http.include` menerima string yang berisi path ke _URLconf_ app. _Directory separator_ yang digunakan pada path tersebut adalah tanda titik (`.`) dan bukan (back)slash.
+
+![main_urlconf](writeup/image/main_urlconf.PNG)
+
+Request datang dengan route, yaitu dari endpoint mana request diterima. Ketika request datang, _URLconf_ di-resolve secara bertahap untuk menyusun response request tersebut dimulai dari route segment paling depan. _URLconf_ app akan di-resolve ketika request datang melalui endpoint yang meng-`include` _URLconf_ tersebut. Misalnya jika pengguna mengakses route `restaurant/order`, maka bagian _URLconf_ yang akan bekerja adalah sebagai berikut:
+```python
+# main URLconf
+urlpatterns = [
+    ...
+    path('restaurant', include('restaurant.urls')),
+    ...
+]
+```
+Lalu di file _restaurant/urls.py_ adalah sebagai berikut:
+```python
+# restaurant URLconf
+urlpatterns = [
+    ...
+    path('order', views.make_order),
+    ...
+]
+```
+
+Untuk menguji bahwa _URLconf_ yang dibuat telah berfungsi dengan benar, akses route yang telah dibuat.
+
+![hello_world](writeup/image/hello_world.PNG)
