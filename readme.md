@@ -114,3 +114,18 @@ _Template_ juga bisa menerima conditional menggunakan sintaks `{% ... %}`. Conto
 <h1>Hello World</h1>
 {% endif %}
 ```
+
+# Debugging Django using VSCode
+
+VS Code memiliki fitur debugging yang terintegrasi dengan editor. VS Code tidak hanya mampu men-debug program Python. VS Code juga bisa men-debug program Django secara khusus.
+
+Debugging project Django menggunakan VS Code dilakukan dengan men-setup script untuk debugging. Buka salah satu file python project Django, dan fokuskan kepada file tersebut. Buka tab "Run and Debug", dan klik opsi "create a launch.json file". Kemudian akan muncul beberapa pilihan konfigurasi untuk debugging. Pilih konfigurasi "Django". Setelah memilih, akan dibuatkan file `.vscode/launch.json` dari _base directory_ project yang berisi opsi-opsi mode debugging yang dipilih. Di keypair `args` bisa ditambahkan satu string setelah nilai `"runserver"` untuk menentukan port yang digunakan agar tidak conflict dengan server yang berjalan secara non-debug.
+
+Untuk melakukan debug, pilih pilihan "Start Debugging", baik melalui menu "Run" di toolbar atau melalui tab "Run and Debug" atau dengan shortcut `F5`. VS Code mampu me-register breakpoint seperti IDE umumnya. Caranya dengan mengklik lingkaran merah yang muncul ketika mouse meng-hover line number di editor.
+
+![register_breakpoint](writeup/image/register_breakpoint.PNG)
+
+Nilai variabel pada context code yang dijalankan akan ter-register di tab "Run and Debug" dropdown "Variables". Apabila ingin melihat variabel lain, bisa digunakan dropdown "Watch" dengan memilih "Add Expression" kemudian masukkan nama variabel yang diinginkan.
+
+![run_debugger](writeup/image/run_debugger.PNG)
+
