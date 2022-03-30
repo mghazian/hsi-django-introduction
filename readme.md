@@ -129,3 +129,19 @@ Nilai variabel pada context code yang dijalankan akan ter-register di tab "Run a
 
 ![run_debugger](writeup/image/run_debugger.PNG)
 
+# Using Django Debug Toolbar
+
+Terdapat package Django untuk memudahkan melakukan debugging bernama `django-debug-toolbar`. Package ini memunculkan sebuah toolbar dalam bentuk HTML yang memberikan informasi mengenai request yang datang dan bagaimana request diproses menjadi response.
+
+Langkah untuk mulai menggunakan `django-debug-toolbar` telah tersedia di (dokumentasi resmi package tersebut)[https://django-debug-toolbar.readthedocs.io/en/latest/installation.html]. Sederhananya, instalasi dilakukan dengan cara berikut ini.
+
+1. Install menggunakan `pip` (jika sudah menggunakan Python Interpreter di venv project) atau `pipenv` (jika belum menggunakan Python Interpreter di venv project). Gunakan command `pip install django-debug-toolbar` (ganti `pip` dengan `pipenv` sesuai kebutuhan)
+2. Lakukan setup package di `settings.py` project. Hal yang perlu di-setup yaitu:
+    1. Memasukkan `'debug_toolbar'` ke dalam variabel `INSTALLED_APPS`
+    2. Memasukkan `'debug_toolbar.middleware.DebugToolbarMiddleware'` ke dalam variabel `MIDDLEWARE`. Posisikan nilai ini se-awal mungkin, tapi jangan posisikan sebelum middleware yang memodifikasi konten response seperti `GZipMiddleware`
+    3. Memasukkan IP yang digunakan untuk mengakses project ke variabel `INTERNAL_IPS`. Umumnya variabel ini belum ada di dalam file, sehingga cukup mendefinisikan variabel tersebut sebagai sebuah list yang berisi IP yang digunakan
+3. Lakukan setup package di _URLconf_ utama dengan meng-include `debug_toolbar.urls` ke route `__debug__/`
+
+Setelah semua langkah selesai, verifikasi bahwa instalasi berhasil dengan mengakses salah satu endpoint non-`__debug__` yang telah di-setup. Pastikan bahwa _template_ yang digunakan memiliki tag `<body>` agar toolbar muncul. Pastikan juga fungsi toolbar berfungsi dengan memilih salah satu menu toolbar, dan tampilan tidak mengeluarkan pesan "Failed to fetch"
+
+![debug_toolbar_preview](writeup/image/debug_toolbar_preview.PNG)
